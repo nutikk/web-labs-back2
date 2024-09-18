@@ -56,16 +56,51 @@ count = 0
 
 @app.route('/lab1/counter')
 def counter():
+    path3 = url_for("static", filename="lab1.css")
     global count
     count += 1
-    return '''
+    return f'''
 <!doctype html>
 <html>
+<head>
+        <link rel="stylesheet" type="text/css" href="{path3}">
+    </head>
     <body>
+        <div>
         Сколько раз вы сюда заходили: ''' + str(count) + '''
+        </div>
+        <div class ="button">
+        <a href= "/lab1/reset_counter">Отчистить счётчик</a>
+        </div>
     </body>
 </html>
 '''
+
+@app.route('/lab1/reset_counter')
+def reset_counter():
+    path4 = url_for("static", filename="lab1.css")
+    global count
+    count = 0
+    return f'''
+<!doctype html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="{path4}">
+    </head>
+    <body>
+        <div>
+            Количество заходов на страницу: ''' + str(count) + '''
+        </div>
+        <div class="button">
+            <a href= "/lab1/counter">Посчитать количество заходов</a>
+        </div>
+         <div>
+            <h2>Счетчик отчищен!</h2>
+        </div>
+    </body>
+</html>
+'''
+
 
 @app.route("/info")
 def info():
