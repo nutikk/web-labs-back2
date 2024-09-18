@@ -1,0 +1,11 @@
+body{
+    background-color: antiquewhite;
+    color: saddlebrown;
+    font-family: Consolas;
+    margin: 0px;
+}
+
+img{
+    width:50%;
+    height: 50%;
+}
