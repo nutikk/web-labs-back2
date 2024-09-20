@@ -4,6 +4,35 @@ body{
     font-family: Consolas;
     margin: 0px;
 }
+header {
+    background-color: rgb(146, 65, 65);
+    color: white;
+    font-family:Comic Sans MS ;
+    font-size:small;
+    margin: 0px;
+    padding-top: 0.5px;
+    text-align: center;
+}
+main {
+    color: maroon;
+    font-family: lucida console;
+    font-size: 16px;
+    margin: 10px 20px 45px
+}
+footer {
+    background-color: rgb(146, 65, 65);
+    color: white;
+    font-family: Comic Sans MS;
+    margin: 0px;
+    padding-right: 5px;
+    font-style: italic;
+    text-align: right;
+    position: fixed;
+    bottom:0;
+    right: 0;
+    left: 0;
+
+}
 
 img{
     width:50%;
