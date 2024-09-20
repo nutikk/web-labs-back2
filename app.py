@@ -164,6 +164,30 @@ def error_418():
 </html>
     ''', 418
 
+@app.errorhandler(404)
+def not_found(err):
+    path7 = url_for("static", filename="lab1.css")
+    path8 = url_for("static", filename="orig.jpg")
+    return f'''
+<!doctype html>
+<html>
+<head>
+    <title>404 Не найдено</title>
+    <link rel="stylesheet" type="text/css" href="{path7}">
+</head>
+<body>
+    <main>
+        <h1>404 Не найдено</h1>
+        <p>Подумайте ещё раз, мой друг. Такой страницы не существует!</p>
+        <p>Код ошибки: 404</p>
+    <div class = img1>
+        <img src="''' + path8 + '''">
+    <div>
+    </main>
+</body>
+</html>
+    ''', 404
+
 
 
 @app.route("/")
