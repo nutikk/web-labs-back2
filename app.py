@@ -1,5 +1,10 @@
 from flask import Flask, url_for, redirect
+from werkzeug.exceptions import HTTPException
 app = Flask(__name__)
+
+class PaymentRequired(HTTPException):
+    code = 402
+    description = 'Требуется оплата'
 
 @app.errorhandler(404)
 def not_found(err):
@@ -62,6 +67,103 @@ def lab1():
 </body>
 </html>
 '''
+
+@app.route("/400")
+def error_400():
+    return '''
+<!doctype html>
+<html>
+<head>
+    <title>400 Плохой запрос</title>
+</head>
+<body>
+    <h1>400 Плохой запрос</h1>
+    <p>Сервер не смог понять запрос из-за неверного синтаксиса.</p>
+    <p>Код ошибки: 400</p>
+</body>
+</html>
+    ''', 400
+
+@app.route("/401")
+def error_401():
+    return '''
+<!doctype html>
+<html>
+<head>
+    <title>401 Неавторизованный</title>
+</head>
+<body>
+    <h1>401 Неавторизованный</h1>
+    <p>Запрос требует аутентификации пользователя.</p>
+    <p>Код ошибки: 401</p>
+</body>
+</html>
+    ''', 401
+
+@app.route("/402")
+def error_402():
+    return '''
+<!doctype html>
+<html>
+<head>
+    <title>402 Требуется оплата</title>
+</head>
+<body>
+    <h1>402 Требуется оплата</h1>
+    <p>Этот код зарезервирован для будущего использования.</p>
+    <p>Код ошибки: 402</p>
+</body>
+</html>
+    ''', 402
+
+@app.route("/403")
+def error_403():
+    return '''
+<!doctype html>
+<html>
+<head>
+    <title>403 Запрещено</title>
+</head>
+<body>
+    <h1>403 Запрещено</h1>
+    <p>Сервер понял запрос, но отказывается его выполнять.</p>
+    <p>Код ошибки: 403</p>
+</body>
+</html>
+    ''', 403
+
+@app.route("/405")
+def error_405():
+    return '''
+<!doctype html>
+<html>
+<head>
+    <title>405 Метод не разрешен</title>
+</head>
+<body>
+    <h1>405 Метод не разрешен</h1>
+    <p>Указанный в запросе метод не разрешен для ресурса, идентифицированного URI.</p>
+    <p>Код ошибки: 405</p>
+</body>
+</html>
+    ''', 405
+
+@app.route("/418")
+def error_418():
+    return '''
+<!doctype html>
+<html>
+<head>
+    <title>418 Я — чайник</title>
+</head>
+<body>
+    <h1>418 Я — чайник:)</h1>
+    <p>Сервер отказывается варить кофе, потому что он, навсегда, чайник.</p>
+    <p>Код ошибки: 418</p>
+</body>
+</html>
+    ''', 418
+
 
 
 @app.route("/")
