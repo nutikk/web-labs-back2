@@ -188,7 +188,26 @@ def not_found(err):
 </html>
     ''', 404
 
+@app.route("/error")
+def trigger_error():
+    # деление на ноль
+    return 1 / 0, 500
 
+@app.errorhandler(500)
+def error_500(err):
+    return '''
+<!doctype html>
+<html>
+<head>
+    <title>500 Внутренняя ошибка сервера</title>
+</head>
+<body>
+    <h1>500 Внутренняя ошибка сервера</h1>
+    <p>Произошла ошибка на сервере. Пожалуйста, попробуйте позже.</p>
+    <p>Код ошибки: 500</p>
+</body>
+</html>
+    ''', 500
 
 @app.route("/")
 @app.route("/lab1/web")
