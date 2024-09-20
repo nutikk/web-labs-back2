@@ -17,7 +17,7 @@ main {
     color: maroon;
     font-family: lucida console;
     font-size: 16px;
-    margin: 10px 20px 45px
+    margin: 2px;
 }
 footer {
     background-color: rgb(146, 65, 65);
@@ -37,6 +37,13 @@ footer {
 img{
     width:50%;
     height: 50%;
+}
+.flask{
+    background-color: rgb(234, 239, 209);
+    text-align: justify;
+    border: 3px solid brown;
+    padding: 2%;
+    font-size: large;
 }
 
 div.button {
