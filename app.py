@@ -60,7 +60,28 @@ def lab1():
     микрофреймворков — минималистичных каркасов
     веб-приложений, сознательно предоставляющих лишь самые базовые возможности.
     </div>
-    <a href= "/index"><Назад</a>
+    <a href= "/index">Назад</a>
+    <h2>Список роутов</h2>
+    <ul class="route-list">
+        <li><a href="/">Главная</a></li>
+        <li><a href="/index">Индекс</a></li>
+        <li><a href="/lab1/web">Web</a></li>
+        <li><a href="/lab1/author">Автор</a></li>
+        <li><a href="/lab1/oak">Дуб</a></li>
+        <li><a href="/lab1/counter">Счетчик</a></li>
+        <li><a href="/lab1/reset_counter">Сбросить счетчик</a></li>
+        <li><a href="/lab1/info">Информация</a></li>
+        <li><a href="/lab1/created">Создано</a></li>
+        <li><a href="/lab1/new">Новый</a></li>
+        <li><a href="/400">400</a></li>
+        <li><a href="/401">401</a></li>
+        <li><a href="/402">402</a></li>
+        <li><a href="/403">403</a></li>
+        <li><a href="/405">405</a></li>
+        <li><a href="/418">418</a></li>
+        <li><a href="/error">Ошибка</a></li>
+    </ul>
+
     </main>
 
     <footer>
@@ -213,16 +234,17 @@ def error_500(err):
 @app.route("/")
 @app.route("/lab1/web")
 def web():
-    return """<!doctype html> 
-        <html>
-           <body> 
-               <h1>web-сервер на flask</h1> 
-           </body> 
-           <a href = "/author">author</a>
-        </html>""", 200, {
-            'X-Server': 'sample',
-            'Content-Type': 'text/plain; charset=utf-8'
-        }
+    return """
+<!doctype html> 
+<html>
+<body> 
+    <h1>web-сервер на flask</h1> 
+    <a href = "/author">author</a>
+</body> 
+</html>""", 200, {
+    'X-Server': 'sample',
+    'Content-Type': 'text/plain; charset=utf-8'
+}
 
 @app.route("/lab1/author")
 def author(): 
@@ -230,15 +252,16 @@ def author():
     group = "ФБИ-21"
     faculty = "ФБ"
 
-    return """<!doctype html>
-        <html>
-            <body>
-                <p>Студент: """ + name + """</p>
-                <p>Группа: """ + group + """</p>
-                <p>Факультет """ + faculty + """</p>
-                <a href = "/web">web</a>
-            </body>
-        </html>"""
+    return """
+<!doctype html>
+<html>
+    <body>
+        <p>Студент: """ + name + """</p>
+        <p>Группа: """ + group + """</p>
+        <p>Факультет """ + faculty + """</p>
+        <a href = "/web">web</a>
+    </body>
+</html>"""
 
 @app.route('/lab1/oak')
 def oak():

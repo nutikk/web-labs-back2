@@ -57,3 +57,23 @@ div.button {
 
 
 }
+ul.route-list li {
+    background-color: rgb(234, 239, 209);
+    border: 1px solid brown;
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+ul.route-list li a {
+    color: maroon;
+    text-decoration: none;
+    font-weight: bold;
+    display: block;
+}
+
+ul.route-list li a:hover {
+    color: saddlebrown;
+    text-decoration: underline;
+}
