@@ -275,7 +275,7 @@ def oak():
     </head>
     <body>
         <h1>Дуб</h1>
-        <img src="''' + path + '''">
+        <img src="{path}">
     </body>
 <html>
 '''
@@ -391,7 +391,7 @@ def new():
 
 ## Лабораторная работа 2
 
-
+# 4 задание
 @app.route('/lab2/a')
 def a():
     return 'без слэша'
@@ -399,5 +399,32 @@ def a():
 @app.route('/lab2/a/')
 def a2():
     return 'со слэшем'
+
+# 5 задание
+flower_list = ('роза', 'тюльпан', 'незабудка', 'ромашка')
+
+@app.route('/lab2/flowers/<int:flower_id>')
+def flowers(flower_id):
+    if flower_id >= (flower_list):
+        return "такого цветка нет", 404
+    else:
+        return "цветок: " + flower_list[flower_id]
+
+# 6 задание
+
+@app.route('/lab2/add_flower/<name>')
+def add_flower(name):
+    flower_list.append(name)
+    return f'''
+<!doctype html>
+<html>
+    <body>
+    <h1>Добавлен новый цветок</h1>
+    <p>Название нового цветка: {name} </p>
+    <p>Всего цветов: {len(flower_list)}</p>
+    <p>Полный список: {flower_list}</p>
+    </body>
+<html>
+'''
 
 
