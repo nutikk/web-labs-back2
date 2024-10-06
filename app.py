@@ -400,15 +400,64 @@ def a():
 def a2():
     return 'со слэшем'
 
+
+
 # 5 задание. Динамические пути
-flower_list = ('роза', 'тюльпан', 'незабудка', 'ромашка')
+flower_list = ['роза', 'тюльпан', 'незабудка', 'ромашка']
 
 @app.route('/lab2/flowers/<int:flower_id>')
 def flowers(flower_id):
-    if flower_id >= (flower_list):
+    if flower_id >= len(flower_list):
         return "такого цветка нет", 404
     else:
-        return "цветок: " + flower_list[flower_id]
+          flower = flower_list[flower_id]
+    return f'''
+<!doctype html>
+<html>
+    <body>
+    <h1>Цветок</h1>
+    <p>Цветок: {flower}</p>
+    <a href="/lab2/all_flowers">Посмотреть все цветы</a>
+    </body>
+</html>
+'''
+
+#
+@app.route('/lab2/all_flowers')
+def all_flowers():
+    flowers_html = ''
+    for flower in flower_list:
+        flowers_html += f'<li>{flower}</li>'
+    return f'''
+<!doctype html>
+<html>
+    <body>
+    <h1>Все цветы</h1>
+    <p>Всего цветов: {len(flower_list)}</p>
+    <ul>
+        {flowers_html}
+    </ul>
+     <a href="/lab2/clear_flowers">Очистить цветы</a>
+    </body>
+</html>
+'''
+@app.route('/lab2/clear_flowers')
+def clear_flowers():
+    global flower_list
+    flower_list.clear()
+    return f'''
+<!doctype html>
+<html>
+    <body>
+    <h1>Список цветов очищен</h1>
+    <p>Все цветы удалены</p>
+    <a href="/lab2/all_flowers">Посмотреть все цветы</a>
+    </body>
+</html>
+'''
+
+
+
 
 # 6 задание. Добавление цветка
 
@@ -427,6 +476,19 @@ def add_flower(name):
 <html>
 '''
 
+@app.route('/lab2/add_flower/')
+def add_flowers():
+    return f'''
+<!doctype html>
+<html>
+    <body>
+    <h1>Ошибка</h1>
+    <p>Вы не задали имя цветка</p>
+    </body>
+</html>
+''', 400
+
+
 # 7 задание. Шаблоны
 
 @app.route('/lab2/example')
@@ -443,3 +505,11 @@ def example():
                           name=name, group=group, numberlab=numberlab, course=course, fruits=fruits)
 
  
+@app.route('/lab2/')
+def lab2():
+    return render_template('lab2.html')
+
+@app.route('/lab2/filters')
+def filters():
+    phrase = "О сколько нам открытий чудных..."
+    return render_template('filter.html', phrase = phrase)
