@@ -435,3 +435,4 @@ def example():
     group = 'ФБИ-21'
     numberlab = '2'
     return render_template('example.html', name=name, group=group, numberlab=numberlab)
+
