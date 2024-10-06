@@ -391,7 +391,7 @@ def new():
 
 ## Лабораторная работа 2
 
-# 4 задание
+# 4 задание. Слэш в конце пути
 @app.route('/lab2/a')
 def a():
     return 'без слэша'
@@ -400,7 +400,7 @@ def a():
 def a2():
     return 'со слэшем'
 
-# 5 задание
+# 5 задание. Динамические пути
 flower_list = ('роза', 'тюльпан', 'незабудка', 'ромашка')
 
 @app.route('/lab2/flowers/<int:flower_id>')
@@ -410,7 +410,7 @@ def flowers(flower_id):
     else:
         return "цветок: " + flower_list[flower_id]
 
-# 6 задание
+# 6 задание. Добавление цветка
 
 @app.route('/lab2/add_flower/<name>')
 def add_flower(name):
@@ -427,9 +427,11 @@ def add_flower(name):
 <html>
 '''
 
-# 7 задание
+# 7 задание. Шаблоны
 
 @app.route('/lab2/example')
 def example():
     name = 'Анна Петерс'
-    return render_template('example.html', name=name)
+    group = 'ФБИ-21'
+    numberlab = '2'
+    return render_template('example.html', name=name, group=group, numberlab=numberlab)
