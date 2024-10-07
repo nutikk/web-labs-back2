@@ -77,3 +77,20 @@ ul.route-list li a:hover {
     color: saddlebrown;
     text-decoration: underline;
 }
+
+table {
+    width: 100%;
+    border-collapse: collapse; 
+    margin-bottom: 20px;
+}
+th {
+    background-color: salmon;
+    border: 2px solid salmon;
+    padding: 8px;
+    text-align: center;
+}
+
+td {
+    border: 2px solid salmon;
+    padding: 8px;
+}
