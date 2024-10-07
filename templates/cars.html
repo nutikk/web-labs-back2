@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Анна Петерс. Список машин</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='lab1.css') }}">
+</head>
+<body>
+    <header>
+        WEB-программирование, часть 2. Лабораторная работа 2
+    </header>
+    
+    <main>
+        <h1>Список машин</h1>
+        <div class="cars">
+            {% for car in cars %}
+            <div class="car">
+                <img src="{{ url_for('static', filename=car.image) }}">
+                <h2>{{ car.name }}</h2>
+                <p>{{ car.description }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+
+    <footer>
+        &copy; Анна Петерс, ФБИ-21, 3 курс, 2024
+    </footer>
+</body>
+</html>

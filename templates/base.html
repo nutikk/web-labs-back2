@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Анна Петерс.{% block lab %}{% endblock %} </title>
     <link rel="stylesheet" href= "{{url_for('static', filename='lab1.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
 </head>
 <body>
     <header>
@@ -13,6 +14,7 @@
     
     <main>
         {% block main %}{% endblock %}
+        <a href="/index">Главное меню</a> 
     </main>
 
     <footer>

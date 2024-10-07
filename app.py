@@ -27,7 +27,9 @@ def index():
         </header>
 
         <main>
-        <a href= "/lab1">Первая лабораторная работа</a>
+        <a href= "/lab1">Первая лабораторная работа</a><br>
+        <a href= "/lab2/">Вторая лабораторная работа</a>
+
         </main>
 
         <footer>
@@ -560,3 +562,22 @@ books = [
 @app.route('/lab2/books')
 def list_books():
     return render_template('books.html', books=books)
+
+
+cars = [
+    {"name": "Toyota Camry", "description": "Комфортный седан с отличной топливной экономичностью.", "image": "car1.jpg"},
+    {"name": "Ford Mustang", "description": "Мощный спортивный автомобиль с классическим дизайном.", "image": "car2.jpg"},
+    {"name": "Tesla Model S", "description": "Электрический седан с передовыми технологиями и высокой производительностью.", "image": "car3.jpg"},
+    {"name": "BMW X5", "description": "Роскошный внедорожник с превосходными динамическими характеристиками.", "image": "car4.jpg"},
+     {"name": "Mazda CX-5", "description": "Компактный внедорожник с элегантным дизайном и высокой производительностью.", "image": "car5.jpg"},
+]
+
+
+@app.route('/lab2/cars')
+def list_cars():
+    return render_template('cars.html', cars=cars)
+
+
+@app.route('/lab2/')
+def labs2():
+    return render_template('lab2.html')

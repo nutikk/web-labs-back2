@@ -94,3 +94,46 @@ td {
     border: 2px solid salmon;
     padding: 8px;
 }
+
+.cars {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.car {
+    border: 2px solid salmon;
+    padding: 60px;
+    text-align: center;
+    width: 300px;
+}
+
+.car img {
+    width: 300px;
+    height: auto;
+}
+
+.car h2 {
+    margin: 10px 0;
+}
+
+ol.route-list li {
+    background-color: rgb(234, 239, 209);
+    border: 1px solid brown;
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+ol.route-list li a {
+    color: maroon;
+    text-decoration: none;
+    font-weight: bold;
+    display: block;
+}
+
+ol.route-list li a:hover {
+    color: saddlebrown;
+    text-decoration: underline;
+}
