@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Анна Петерс. Лабораторная 2</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='lab1.css') }}">
+</head>
+<body>
+    <header>
+        WEB-программирование, часть 2. Лабораторная работа 2
+    </header>
+    
+    <main>
+        <h1>Все цветы</h1>
+        <p>Всего цветов: {{ flowers_count }}</p>
+        <ul>
+            {% for flower in flowers %}
+            <li>
+                {{ loop.index }} - {{ flower.name }}: {{ flower.price }} &#8381;
+                <a href="{{ url_for('delete_flower', flower_id=loop.index0) }}">Удалить</a>
+            </li>
+            {% endfor %}
+        </ul>
+        <form action="{{ url_for('add_flower') }}" method="post">
+            <input type="text" name="name" placeholder="Название цветка" required>
+            <input type="number" name="price" placeholder="Цена" required>
+            <button type="submit">Добавить цветок</button>
+        </form>
+        <a href="{{ url_for('clear_flowers') }}">Очистить все цветы</a>
+    </main>
+
+    <footer>
+        &copy; Анна Петерс, ФБИ-21, 3 курс, 2024
+    </footer>
+</body>
+</html>

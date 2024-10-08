@@ -1,4 +1,4 @@
-from flask import Flask, url_for, redirect, render_template
+from flask import Flask, url_for, redirect, render_template, request
 from werkzeug.exceptions import HTTPException
 app = Flask(__name__)
 
@@ -405,90 +405,53 @@ def a2():
 
 
 # 5 задание. Динамические пути
-flower_list = ['роза', 'тюльпан', 'незабудка', 'ромашка']
+flower_list = [
+    {'name': 'роза', 'price': 100},
+    {'name': 'тюльпан', 'price': 50},
+    {'name': 'незабудка', 'price': 30},
+    {'name': 'ромашка', 'price': 20}
+]
 
 @app.route('/lab2/flowers/<int:flower_id>')
 def flowers(flower_id):
     if flower_id >= len(flower_list):
-        return "такого цветка нет", 404
+        return "Такого цветка нет", 404
     else:
-          flower = flower_list[flower_id]
-    return f'''
-<!doctype html>
-<html>
-    <body>
-    <h1>Цветок</h1>
-    <p>Цветок: {flower}</p>
-    <a href="/lab2/all_flowers">Посмотреть все цветы</a>
-    </body>
-</html>
-'''
+        flower = flower_list[flower_id]
+        return render_template('flowers.html', flower=flower)
 
 #
 @app.route('/lab2/all_flowers')
 def all_flowers():
-    flowers_html = ''
-    for flower in flower_list:
-        flowers_html += f'<li>{flower}</li>'
-    return f'''
-<!doctype html>
-<html>
-    <body>
-    <h1>Все цветы</h1>
-    <p>Всего цветов: {len(flower_list)}</p>
-    <ul>
-        {flowers_html}
-    </ul>
-     <a href="/lab2/clear_flowers">Очистить цветы</a>
-    </body>
-</html>
-'''
+    return render_template('all_flowers.html', flowers=flower_list)
+
 @app.route('/lab2/clear_flowers')
 def clear_flowers():
     global flower_list
     flower_list.clear()
-    return f'''
-<!doctype html>
-<html>
-    <body>
-    <h1>Список цветов очищен</h1>
-    <p>Все цветы удалены</p>
-    <a href="/lab2/all_flowers">Посмотреть все цветы</a>
-    </body>
-</html>
-'''
+    return render_template('clear_flowers.html')
 
-
+@app.route('/lab2/delete_flower/<int:flower_id>')
+def delete_flower(flower_id):
+    if flower_id >= len(flower_list):
+        return "Такого цветка нет", 404
+    else:
+        del flower_list[flower_id]
+        return redirect(url_for('all_flowers'))
 
 
 # 6 задание. Добавление цветка
 
-@app.route('/lab2/add_flower/<name>')
-def add_flower(name):
-    flower_list.append(name)
-    return f'''
-<!doctype html>
-<html>
-    <body>
-    <h1>Добавлен новый цветок</h1>
-    <p>Название нового цветка: {name} </p>
-    <p>Всего цветов: {len(flower_list)}</p>
-    <p>Полный список: {flower_list}</p>
-    </body>
-<html>
-'''
+@app.route('/lab2/add_flower', methods=['GET', 'POST'])
+def add_flower():
+    if request.method == 'POST':
+        name = request.form['name']
+        price = request.form['price']
+        flower_list.append({'name': name, 'price': price})
+        return redirect(url_for('all_flowers'))
+    else:
+        return "Вы не задали имя цветка", 400
 
-@app.route('/lab2/add_flower/')
-def add_flowers():
-    return f'''
-<!doctype html>
-<html>
-    <body>
-    <h1>Ошибка</h1>
-    <p>Вы не задали имя цветка</p>
-    </body>
-</html>
-''', 400
 
 
 # 7 задание. Шаблоны
