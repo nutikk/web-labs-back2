@@ -137,3 +137,7 @@ ol.route-list li a:hover {
     color: saddlebrown;
     text-decoration: underline;
 }
+
+.error {
+    color: red;
+}

@@ -26,7 +26,12 @@ def del_cookie():
 
 @lab3.route('/lab3/form1')
 def form1():
+    errors = {}
     user = request.args.get('user')
     age = request.args.get('age')
     sex = request.args.get('sex')
-    return render_template('lab3/form1.html', user=user, age=age, sex=sex)
+    if user == '':
+        errors['user'] = 'Заполните поле!'
+    if age == '':
+        errors['age']  = 'Заполнитe поле!'
+    return render_template('lab3/form1.html', user=user, sex=sex, age=age, errors=errors)
