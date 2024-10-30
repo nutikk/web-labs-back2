@@ -47,7 +47,7 @@ def delete_flower(flower_id):
         return "Такого цветка нет", 404
     else:
         del flower_list[flower_id]
-        return redirect(url_for('all_flowers'))
+        return redirect(url_for('lab2.all_flowers'))
 
 
 # 6 задание. Добавление цветка
@@ -57,8 +57,8 @@ def add_flower():
     if request.method == 'POST':
         name = request.form['name']
         price = request.form['price']
-        flower_list.lab2end({'name': name, 'price': price})
-        return redirect(url_for('all_flowers'))
+        flower_list.append({'name': name, 'price': price})
+        return redirect(url_for('lab2.all_flowers'))
     else:
         return "Вы не задали имя цветка", 400
 
@@ -109,12 +109,12 @@ def calc(a, b):
 
 @lab2.route('/lab2/calc/')
 def calc2():
-    return redirect(url_for('calc', a=1, b=1))
+    return redirect(url_for('lab2.calc', a=1, b=1))
 
 
 @lab2.route('/lab2/calc/<int:a>')
 def calc3(a):
-    return redirect(url_for('calc', a=a, b=1))
+    return redirect(url_for('lab2.calc', a=a, b=1))
 
 
 
