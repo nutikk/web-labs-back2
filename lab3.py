@@ -1,5 +1,7 @@
 from flask import Blueprint, render_template, request, make_response, redirect
+
 lab3 = Blueprint('lab3', __name__)
+
 
 @lab3.route('/lab3/')
 def lab():
@@ -32,6 +34,38 @@ def form1():
     sex = request.args.get('sex')
     if user == '':
         errors['user'] = 'Заполните поле!'
-    if age == '':
+    elif age == '':
         errors['age']  = 'Заполнитe поле!'
     return render_template('lab3/form1.html', user=user, sex=sex, age=age, errors=errors)
+
+
+@lab3.route('/lab3/order')
+def order():
+    return render_template('lab3/order.html')
+
+@lab3.route('/lab3/pay')
+def pay():
+    price=0
+    drink = request.args.get('drink')
+    if drink == 'coffee':
+        price = 120
+    elif drink == 'black-tea':
+        price = 80
+    else:
+        price = 70
+
+    if request.args.get('milk') == 'on':
+        price += 30
+    if request.args.get('sugar') == 'on':
+        price += 10
+
+    return render_template('/lab3/pay.html', price=price) 
+
+
+@lab3.route('/lab3/success', methods=['get','post'])
+def success():
+    if request.method == 'POST':
+        price = request.form.get('price')
+    else:
+        price = request.args.get('price') 
+    return render_template('/lab3/success.html', price=price)
