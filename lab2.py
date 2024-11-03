@@ -28,18 +28,18 @@ def flowers(flower_id):
         return "Такого цветка нет", 404
     else:
         flower = flower_list[flower_id]
-        return render_template('flowers.html', flower=flower)
+        return render_template('lab2/flowers.html', flower=flower)
 
 #
 @lab2.route('/lab2/all_flowers')
 def all_flowers():
-    return render_template('all_flowers.html', flowers=flower_list)
+    return render_template('lab2/all_flowers.html', flowers=flower_list)
 
 @lab2.route('/lab2/clear_flowers')
 def clear_flowers():
     global flower_list
     flower_list.clear()
-    return render_template('clear_flowers.html')
+    return render_template('lab2/clear_flowers.html')
 
 @lab2.route('/lab2/delete_flower/<int:flower_id>')
 def delete_flower(flower_id):
@@ -76,18 +76,18 @@ def example():
        {'name': 'мандарины', 'price': 95},
        {'name': 'манго', 'price': 321 }
    ] 
-   return render_template('example.html',
+   return render_template('lab2/example.html',
                           name=name, group=group, numberlab=numberlab, course=course, fruits=fruits)
 
  
 @lab2.route('/lab2/')
 def lab():
-    return render_template('lab2.html')
+    return render_template('lab2/lab2.html')
 
 @lab2.route('/lab2/filters')
 def filters():
     phrase = "О сколько нам открытий чудных..."
-    return render_template('filter.html', phrase = phrase)
+    return render_template('lab2/filter.html', phrase = phrase)
 
 
 @lab2.route('/lab2/calc/<int:a>/<int:b>')
@@ -134,7 +134,7 @@ books = [
 
 @lab2.route('/lab2/books')
 def list_books():
-    return render_template('books.html', books=books)
+    return render_template('lab2/books.html', books=books)
 
 
 cars = [
@@ -148,9 +148,9 @@ cars = [
 
 @lab2.route('/lab2/cars')
 def list_cars():
-    return render_template('cars.html', cars=cars)
+    return render_template('lab2/cars.html', cars=cars)
 
 
 @lab2.route('/lab2/')
 def labs2():
-    return render_template('lab2.html')
+    return render_template('lab2/lab2.html')
