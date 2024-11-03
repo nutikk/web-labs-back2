@@ -1,24 +1,6 @@
-body{
-    background-color: antiquewhite;
-    color: saddlebrown;
-    font-family: Consolas;
-    margin: 0px;
-}
-header {
-    background-color: rgb(146, 65, 65);
-    color: white;
-    font-family:Comic Sans MS ;
-    font-size:small;
-    margin: 0px;
-    padding-top: 0.5px;
-    text-align: center;
-}
-main {
-    color: maroon;
-    font-family: lucida console;
-    font-size: 16px;
-    margin: 2px;
-}
+
+
+
 footer {
     background-color: rgb(146, 65, 65);
     color: white;
