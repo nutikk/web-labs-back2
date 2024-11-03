@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block lab %}Лабораторная работа 1{% endblock %}
+
+{% block main %}
+
+    <h1>Железнодорожный билет</h1>
+
+    <div> ФИО пассажира: {{ ticket.fio }}<div>
+
+    <div>Полка: {{ ticket.berth }}</div>
+
+    <div>С бельём: {{ 'Да' if ticket.with_linen else 'Нет' }}</div>
+
+    <div>С багажом: {{ 'Да' if ticket.with_baggage else 'Нет' }}</div>
+
+    <div>Возраст: {{ ticket.age }}</div>
+
+    <div>Пункт выезда: {{ ticket.departure }}</div>
+
+    <div>Пункт назначения: {{ ticket.destination }}</div>
+
+    <div>Дата поездки: {{ ticket.travel_date }}</div>
+
+    <div>Нужна ли страховка: {{ 'Да' if ticket.with_insurance else 'Нет' }}</div>
+
+    <div>Цена: {{ ticket.price }} руб.</div>
+    <div>
+        {% if ticket.is_child %}
+        Тип билета: Детский билет
+
+        {% else %}
+        Тип билета: Взрослый билет
+    </div>
+    {% endif %}
+    <a href="/lab3/ticket">Отказаться</a>
+    
+{% endblock %}
