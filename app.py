@@ -2,11 +2,13 @@ from flask import Flask, url_for
 from lab1 import lab1
 from lab2 import lab2
 from lab3 import lab3 
+from lab4 import lab4
 from werkzeug.exceptions import HTTPException
 app = Flask(__name__)
 app.register_blueprint(lab1)
 app.register_blueprint(lab2)
 app.register_blueprint(lab3)
+app.register_blueprint(lab4)
 
 
 class PaymentRequired(HTTPException):
@@ -35,7 +37,8 @@ def index():
         <main>
         <a href= "/lab1">Первая лабораторная работа</a><br>
         <a href= "/lab2/">Вторая лабораторная работа</a><br>
-        <a href ="/lab3/">Третья лабораторная работа</a>
+        <a href ="/lab3/">Третья лабораторная работа</a><br>
+        <a href ="/lab4/">Четвертая лабораторная работа</a>
 
         </main>
 
