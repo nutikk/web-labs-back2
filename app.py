@@ -5,6 +5,8 @@ from lab3 import lab3
 from lab4 import lab4
 from werkzeug.exceptions import HTTPException
 app = Flask(__name__)
+
+app.secret_key = 'секретный секретик'
 app.register_blueprint(lab1)
 app.register_blueprint(lab2)
 app.register_blueprint(lab3)
