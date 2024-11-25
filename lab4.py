@@ -159,6 +159,66 @@ def logout():
     session.pop('login', None)
     return redirect('/lab4/login')
 
+@lab4.route('/lab4/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'GET':
+        return render_template('lab4/register.html')
+
+    login = request.form.get('login')
+    password = request.form.get('password')
+    name = request.form.get('name')
+    gender = request.form.get('gender')
+
+    if not login or not password or not name or not gender:
+        return render_template('lab4/register.html', error='Все поля должны быть заполнены')
+
+    if any(user['login'] == login for user in users):
+        return render_template('lab4/register.html', error='Пользователь с таким логином уже существует')
+
+    users.append({'login': login, 'password': password, 'name': name, 'gender': gender})
+    return redirect('/lab4/login')
+
+@lab4.route('/lab4/users', methods=['GET'])
+def users_list():
+    if 'login' not in session:
+        return redirect('/lab4/login')
+
+    login = session['login']
+    return render_template('lab4/users.html', users=users, current_user=login)
+
+@lab4.route('/lab4/delete_user', methods=['POST'])
+def delete_user():
+    if 'login' not in session:
+        return redirect('/lab4/login')
+
+    login = session['login']
+    users[:] = [user for user in users if user['login'] != login]
+    session.pop('login', None)
+    return redirect('/lab4/login')
+
+@lab4.route('/lab4/edit_user', methods=['GET', 'POST'])
+def edit_user():
+    if 'login' not in session:
+        return redirect('/lab4/login')
+
+    login = session['login']
+    user = next((user for user in users if user['login'] == login), None)
+
+    if request.method == 'GET':
+        return render_template('lab4/edit_user.html', user=user)
+
+    new_name = request.form.get('name')
+    new_password = request.form.get('password')
+
+    if not new_name or not new_password:
+        return render_template('lab4/edit_user.html', user=user, error='Все поля должны быть заполнены')
+
+    user['name'] = new_name
+    user['password'] = new_password
+
+    return redirect('/lab4/users')
+
+
 
 @lab4.route('/lab4/fridge', methods=['GET', 'POST'])
 def fridge():
@@ -183,4 +243,41 @@ def fridge():
     elif -4 <= temperature <= -1:
         return render_template('lab4/fridge.html', message=f'Установлена температура: {temperature}°С', snowflakes=1)
 
+
+prices = {
+        'ячмень': 12345,
+        'овёс': 8522,
+        'пшеница': 8722,
+        'рожь': 14111
+    }
+
+@lab4.route('/lab4/grain-order', methods=['GET', 'POST'])
+def grain_order():
+    if request.method == 'GET':
+        return render_template('lab4/grain-order.html')
+
+    grain_type = request.form.get('grain_type')
+    weight = request.form.get('weight')
+
+    if not weight:
+        return render_template('lab4/grain-order.html', error='Вес не указан')
+
+    weight = float(weight)
+
+    if weight <= 0:
+        return render_template('lab4/grain-order.html', error='Вес должен быть больше 0')
+
+    if weight > 500:
+        return render_template('lab4/grain-order.html', error='Такого объема сейчас нет в наличии')
+
+
+    price_per_ton = prices.get(grain_type, 0)
+    total_cost = price_per_ton * weight
+
+    if weight > 50:
+        discount = total_cost * 0.1
+        total_cost -= discount
+        return render_template('lab4/grain-order.html', success=True, grain_type=grain_type, weight=weight, total_cost=total_cost, discount=discount)
+
+    return render_template('lab4/grain-order.html', success=True, grain_type=grain_type, weight=weight, total_cost=total_cost)
 

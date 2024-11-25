@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block lab %}Лабораторная работа 4 {% endblock %}
+
+{% block main %}
+    <style>
+        .users-container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+            margin:auto;
+            margin-top:100px
+        }
+
+        .users-container h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .users-container ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .users-container li {
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+       
+
+        .users-container button:hover {
+            opacity: 0.9;
+        }
+
+        .users-container .danger-button {
+            background: #dc3545;
+        }
+    </style>
+
+    <div class="users-container">
+        <h1>Список пользователей</h1>
+        <ul>
+            {% for user in users %}
+                <li>{{ user['name'] }} ({{ user['login'] }})</li>
+            {% endfor %}
+        </ul>
+        <div>
+            <form action="/lab4/delete_user" method="post">
+                <button class="danger-button">Удалить себя</button>
+            </form>
+        </div>
+        <div>
+            <form action="/lab4/edit_user" method="get">
+                <button>Редактировать себя</button>
+            </form>
+        </div>
+        <div>
+            <form action="/lab4/login" method="get">
+                <button>Назад к профилю</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

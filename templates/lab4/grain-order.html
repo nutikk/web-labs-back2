@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block lab %}Лабораторная работа 4{% endblock %}
+
+{% block main %}
+    <style>
+        .order-container {
+            background: #ac9c7f;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+            margin: auto;
+            margin-top: 100px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .order-container h1 {
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        .order-container label {
+            display: block;
+            text-align: left;
+            margin-bottom: 10px;
+            color: #555;
+            font-weight: 500;
+            font-size: 16px;
+        }
+
+        .order-container select,
+        .order-container input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            background: #fff;
+            transition: border-color 0.3s ease;
+        }
+
+        .order-container select:focus,
+        .order-container input[type="text"]:focus {
+            border-color: #635d48;
+            outline: none;
+        }
+
+        .order-container button {
+            background: #888a63;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+            transition: background 0.3s ease;
+        }
+
+        .order-container button:hover {
+            background: #827564;
+        }
+
+        .order-container .error {
+            color: #d9534f;
+            font-weight: bold;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .order-container .success {
+            color: #ecefec;
+            font-weight: bold;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .order-container .success p {
+            margin: 10px 0;
+        }
+    </style>
+
+    <div class="order-container">
+        <h1>Заказ зерна</h1>
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+        {% if success %}
+            <p class="success">Заказ успешно сформирован. Вы заказали {{ grain_type }}. Вес: {{ weight }} т. Сумма к оплате: {{ total_cost }} руб.</p>
+            {% if discount %}
+                <p>Применена скидка за большой объем: {{ discount }} руб.</p>
+            {% endif %}
+        {% else %}
+            <form method="post">
+                <div>
+                    <label for="grain_type">Тип зерна:</label>
+                    <select id="grain_type" name="grain_type">
+                        <option value="ячмень">Ячмень</option>
+                        <option value="овёс">Овёс</option>
+                        <option value="пшеница">Пшеница</option>
+                        <option value="рожь">Рожь</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="weight">Вес (в тоннах):</label>
+                    <input type="text" id="weight" name="weight">
+                </div>
+                <div>
+                    <button type="submit">Заказать</button>
+                </div>
+            </form>
+        {% endif %}
+    </div>
+{% endblock %}
