@@ -21,6 +21,11 @@
             {% endif %}
         </span>
     </div>
+    <div>
+        {% if username %}
+        <a href="/lab5/logout">Выйти</a>
+    {% endif %}
+    </div>
 {% endblock %}
 
 {% block styles %}
