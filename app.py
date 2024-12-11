@@ -1,4 +1,4 @@
-from flask import Flask, url_for
+from flask import Flask, url_for, os
 from lab1 import lab1
 from lab2 import lab2
 from lab3 import lab3 
@@ -7,7 +7,8 @@ from lab5 import lab5
 from werkzeug.exceptions import HTTPException
 app = Flask(__name__)
 
-app.secret_key = 'секретный секретик'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'секретно-секретный секрет')
+app.config['DB_type'] = os.getenv('DB_TYPE', 'postgres')
 app.register_blueprint(lab1)
 app.register_blueprint(lab2)
 app.register_blueprint(lab3)
