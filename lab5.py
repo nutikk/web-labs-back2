@@ -74,9 +74,9 @@ def login():
     db_close(conn, cur)
     return render_template('lab5/success_login.html', login=login)
 
-@lab5.route('/lab5/create', methods = ['GET', 'POST'])
+@lab5.route('/lab5/create', methods=['GET', 'POST'])
 def create():
-    login=session.get('login')
+    login = session.get('login')
     if not login:
         return redirect('/lab5/login')
     
@@ -88,13 +88,28 @@ def create():
 
     conn, cur = db_connect()
 
-    cur.execute("SELECT * FROM users WHERE login=%s;", (login,))
-
+    cur.execute("SELECT id FROM users WHERE login=%s;", (login,))
     login_id = cur.fetchone()["id"]
 
-    cur.execute(f"INSERT INTO articles (user_id, title, article_text) \
-                VALUES ({login_id}, '{title}', '{article_text}');")
+    cur.execute("INSERT INTO articles (user_id, title, article_text) VALUES (%s, %s, %s);", (login_id, title, article_text))
+    
+    db_close(conn, cur)
+    return redirect('/lab5')
+
+@lab5.route('/lab5/list')
+def list():
+    login = session.get('login')
+    if not login:
+        return redirect('/lab5/login')
+    
+    conn, cur = db_connect()
+
+    cur.execute("SELECT id FROM users WHERE login=%s;", (login,))
+    login_id = cur.fetchone()['id']
+
+    cur.execute("SELECT id, title, article_text FROM articles WHERE user_id=%s;", (login_id,))
+    articles = cur.fetchall()
 
     db_close(conn, cur)
+    return render_template('lab5/articles.html', articles=articles)
 
-    return redirect('/lab5')
