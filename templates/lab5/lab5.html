@@ -12,8 +12,14 @@
         <li><a href="/lab5/list">Список статей</a></li>
         <li><a href="/lab5/create">Создать статью</a></li>
     </ol>
-    <div class="user-info">
-        <span>{{ username }}</span>
+    <div>
+        <span>
+            {% if username %}
+            {{ username }}
+            {% else %}
+                Anonymous
+            {% endif %}
+        </span>
     </div>
 {% endblock %}
 
@@ -37,16 +43,6 @@
             margin-bottom: 20px;
         }
 
-        .user-info {
-            text-align: right;
-            padding: 10px;
-            background-color: #ddd;
-            border-bottom: 1px solid #ccc;
-            width: 100%;
-            position: absolute;
-            top: 0;
-            right: 0;
-        }
 
         .user-info span {
             font-weight: bold;
