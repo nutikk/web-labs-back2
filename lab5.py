@@ -122,7 +122,12 @@ def list():
     cur.execute("SELECT id FROM users WHERE login=%s;", (login,))
     login_id = cur.fetchone()['id']
 
-    cur.execute("SELECT id, title, article_text FROM articles WHERE user_id=%s;", (login_id,))
+    cur.execute("""
+        SELECT id, title, article_text, is_favorite
+        FROM articles
+        WHERE user_id=%s
+        ORDER BY is_favorite DESC, id ASC;
+    """, (login_id,))
     articles = cur.fetchall()
 
     db_close(conn, cur)
@@ -182,3 +187,52 @@ def delete_article(article_id):
 
     return redirect('/lab5/list')
 
+@lab5.route('/lab5/users')
+def users():
+    conn, cur = db_connect()
+
+    cur.execute("SELECT login FROM users;")
+    users = cur.fetchall()
+
+    db_close(conn, cur)
+    return render_template('lab5/users.html', users=users)
+
+@lab5.route('/lab5/public_articles')
+def public_articles():
+    conn, cur = db_connect()
+
+    cur.execute("""
+        SELECT id, title, article_text, user_id
+        FROM articles
+        WHERE is_public=TRUE
+        ORDER BY id ASC;
+    """)
+    articles = cur.fetchall()
+
+    db_close(conn, cur)
+    return render_template('lab5/public_articles.html', articles=articles)
+
+@lab5.route('/lab5/toggle_favorite/<int:article_id>', methods=['POST'])
+def toggle_favorite(article_id):
+    login = session.get('login')
+    if not login:
+        return redirect('/lab5/login')
+
+    conn, cur = db_connect()
+
+    cur.execute("SELECT id FROM users WHERE login=%s;", (login,))
+    login_id = cur.fetchone()["id"]
+
+    cur.execute("SELECT is_favorite FROM articles WHERE id=%s AND user_id=%s;", (article_id, login_id))
+    article = cur.fetchone()
+
+    if not article:
+        db_close(conn, cur)
+        return "Статья не найдена", 404
+
+    new_favorite_value = not article['is_favorite']
+
+    cur.execute("UPDATE articles SET is_favorite=%s WHERE id=%s;", (new_favorite_value, article_id))
+    db_close(conn, cur)
+
+    return redirect('/lab5/list')
