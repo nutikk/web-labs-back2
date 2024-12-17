@@ -2,6 +2,88 @@
 
 {% block lab %} Лабораторная работа 6 {% endblock %}
 
+{% block style %}
+<style>
+    /* Общие стили */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    h1 {
+        text-align: center;
+        color: #333;
+    }
+
+    h3 {
+        color: #555;
+        margin-top: 20px;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    li {
+        background-color: #fff;
+        margin: 10px 0;
+        padding: 15px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    button {
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+        background-color: #ddd;
+    }
+
+    button.booking {
+        background-color: #28a745;
+        color: white;
+    }
+
+    button.cancellation {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    button.booking:hover {
+        background-color: #218838;
+    }
+
+    button.cancellation:hover {
+        background-color: #c82333;
+    }
+
+    #user-rental-summary {
+        margin-top: 30px;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    #user-rental-summary p {
+        margin: 5px 0;
+        color: #333;
+    }
+</style>
+{% endblock %}
+
 {% block script %}
 <script>
     function getOfficeList() {
@@ -31,10 +113,12 @@
 
                 const bookingButton = document.createElement('button');
                 bookingButton.innerText = 'зарезервировать';
+                bookingButton.className = 'booking';
                 bookingButton.onclick = function() { booking(office.number); };
 
                 const cancellationButton = document.createElement('button');
                 cancellationButton.innerText = 'освободить';
+                cancellationButton.className = 'cancellation';
                 cancellationButton.onclick = function() { cancellation(office.number); };
 
                 if (office.tenant) {
