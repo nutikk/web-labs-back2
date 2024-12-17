@@ -34,11 +34,29 @@ def get_films():
     return films
 
 
+@lab7.route('/lab7/rest-api/films/<int:id>', methods=['GET'])
+def get_film(id):
+    if 0 <= id < len(films):
+        return films[id]
+    else:
+        return "Нет фильма под таким индексом", 404
+    
 @lab7.route('/lab7/rest-api/films/', methods=['DELETE'])
-def del_films():
+def del_film(id):
     if 0 <= id < len(films):
         del films[id]
         return '', 204
     else:
         return "Нет фильма под таким индексом", 404
+    
+@lab7.route('/lab7/rest-api/films/<int:id>', methods=['PUT'])
+def put_film(id):
+    if 0 <= id < len(films):
+        film = request.get_json()
+        films[id] = film
+        return films[id]
+    else:
+        return "Нет фильма под таким индексом", 404
+    
+
 
