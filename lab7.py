@@ -34,10 +34,11 @@ def get_films():
     return films
 
 
-@lab7.route('/lab7/rest-api/films/<int:id>', methods=['GET'])
-def get_film(id):
+@lab7.route('/lab7/rest-api/films/', methods=['DELETE'])
+def del_films():
     if 0 <= id < len(films):
-        return films[id]
+        del films[id]
+        return '', 204
     else:
         return "Нет фильма под таким индексом", 404
 
