@@ -1,75 +1,160 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, current_app, jsonify
+import psycopg2
+from psycopg2.extras import RealDictCursor
+import sqlite3
+from os import path
+from datetime import datetime
 
 lab7 = Blueprint('lab7', __name__)
 
+def db_connect():
+    if current_app.config['DB_TYPE'] == 'postgres':
+        conn = psycopg2.connect(
+            host='127.0.0.1',
+            database='anna_peters_base',
+            user='anna_peters_base',
+            password='123'
+        )
+        cur = conn.cursor(cursor_factory=RealDictCursor)
+    else:
+        dir_path = path.dirname(path.realpath(__file__))
+        db_path = path.join(dir_path, "database.db")
+        conn = sqlite3.connect(db_path)
+        conn.row_factory = sqlite3.Row
+        cur = conn.cursor()
+
+    return conn, cur
+
+def db_close(conn, cur):
+    conn.commit()
+    cur.close()
+    conn.close()
+
 @lab7.route('/lab7/')
-def main():
-    return render_template('lab7/index.html')
-
-
-films = [
-    {
-        "title": "The Matrix",
-        "title_ru": "Матрица",
-        "year": 1999,
-        "description": "Хакер Нео узнаёт правду о реальности и своей роли в спасении человечества от машин, которые держат мир в иллюзии."
-    },
-    {
-        "title": "Fight Club",
-        "title_ru": "Бойцовский клуб",
-        "year": 1999,
-        "description": "Анонимный герой создаёт подпольный бойцовский клуб, чтобы снять напряжение от своей унылой жизни, но вскоре всё выходит из-под контроля."
-    },
-    {
-        "title": "Gladiator",
-        "title_ru": "Гладиатор",
-        "year": 2000,
-        "description": "Римский генерал Максимус становится гладиатором и жаждет мести императору, который убил его семью и лишил власти."
-    }
-]
-
+def lab():
+    return render_template('lab7/lab7.html')
 
 @lab7.route('/lab7/rest-api/films/', methods=['GET'])
 def get_films():
-    return films
-
+    conn, cur = db_connect()
+    cur.execute("SELECT * FROM films;")
+    films = cur.fetchall()
+    db_close(conn, cur)
+    return jsonify(films)
 
 @lab7.route('/lab7/rest-api/films/<int:id>', methods=['GET'])
 def get_film(id):
-    if 0 <= id < len(films):
-        return films[id]
-    else:
-        return "Нет фильма под таким индексом", 404
-    
-@lab7.route('/lab7/rest-api/films/', methods=['DELETE'])
+    conn, cur = db_connect()
+    cur.execute("SELECT * FROM films WHERE id = %s;", (id,))
+    film = cur.fetchone()
+    db_close(conn, cur)
+    if film is None:
+        return {"error": "Film not found"}, 404
+    return jsonify(film)
+
+@lab7.route('/lab7/rest-api/films/<int:id>', methods=['DELETE'])
 def del_film(id):
-    if 0 <= id < len(films):
-        del films[id]
-        return '', 204
-    else:
-        return "Нет фильма под таким индексом", 404
-    
+    conn, cur = db_connect()
+    cur.execute("DELETE FROM films WHERE id = %s;", (id,))
+    db_close(conn, cur)
+    return '', 204
+
 @lab7.route('/lab7/rest-api/films/<int:id>', methods=['PUT'])
 def put_film(id):
-    if 0 <= id < len(films):
-        film = request.get_json()
-        films[id] = film
-        return films[id]
+    conn, cur = db_connect()
+    film = request.get_json()
+
+    # Проверки для полей
+    errors = {}
+
+    # Проверка русского названия
+    if not film.get('title_ru'):
+        errors['title_ru'] = 'Русское название не может быть пустым'
+
+    # Проверка оригинального названия
+    if not film.get('title') and not film.get('title_ru'):
+        errors['title'] = 'Название на оригинальном языке не может быть пустым, если русское название тоже пустое'
+
+    # Проверка года
+    if not film.get('year'):
+        errors['year'] = 'Год выпуска не может быть пустым'
     else:
-        return "Нет фильма под таким индексом", 404
-    
+        year = int(film['year'])
+        current_year = datetime.now().year
+        if year < 1895 or year > current_year:
+            errors['year'] = f'Год должен быть от 1895 до {current_year}'
+
+    # Проверка описания
+    if not film.get('description'):
+        errors['description'] = 'Описание не может быть пустым'
+    elif len(film['description']) > 2000:
+        errors['description'] = 'Описание не может быть длиннее 2000 символов'
+
+    # Если есть ошибки, возвращаем их
+    if errors:
+        return jsonify(errors), 400
+
+    # Если оригинальное название пустое, используем русское название
+    if not film.get('title'):
+        film['title'] = film['title_ru']
+
+    try:
+        cur.execute("UPDATE films SET title = %s, title_ru = %s, year = %s, description = %s WHERE id = %s;",
+                    (film['title'], film['title_ru'], film['year'], film['description'], id))
+        db_close(conn, cur)
+        return jsonify(film), 200
+    except Exception as e:
+        db_close(conn, cur)
+        return {'error': f'Ошибка при обновлении фильма: {str(e)}'}, 500
+
 @lab7.route('/lab7/rest-api/films/', methods=['POST'])
 def add_film():
-    new_film = request.get_json()
+    conn, cur = db_connect()
+    film = request.get_json()
 
-    required_fields = ["title", "title_ru", "year", "description"]
-    if not all(field in new_film for field in required_fields):
-        return {"error": "Missing required fields"}, 400
+    # Проверки для полей
+    errors = {}
 
-    films.append(new_film)
+    # Проверка русского названия
+    if not film.get('title_ru'):
+        errors['title_ru'] = 'Русское название не может быть пустым'
 
-    new_index = len(films) - 1
-    return {"id": new_index}, 201
+    # Проверка оригинального названия
+    if not film.get('title') and not film.get('title_ru'):
+        errors['title'] = 'Название на оригинальном языке не может быть пустым, если русское название тоже пустое'
+
+    # Проверка года
+    if not film.get('year'):
+        errors['year'] = 'Год выпуска не может быть пустым'
+    else:
+        year = int(film['year'])
+        current_year = datetime.now().year
+        if year < 1895 or year > current_year:
+            errors['year'] = f'Год должен быть от 1895 до {current_year}'
+
+    # Проверка описания
+    if not film.get('description'):
+        errors['description'] = 'Описание не может быть пустым'
+    elif len(film['description']) > 2000:
+        errors['description'] = 'Описание не может быть длиннее 2000 символов'
+
+    # Если есть ошибки, возвращаем их
+    if errors:
+        return jsonify(errors), 400
+
+    # Если оригинальное название пустое, используем русское название
+    if not film.get('title'):
+        film['title'] = film['title_ru']
+
+    try:
+        cur.execute("INSERT INTO films (title, title_ru, year, description) VALUES (%s, %s, %s, %s) RETURNING id;",
+                    (film['title'], film['title_ru'], film['year'], film['description']))
+        film_id = cur.fetchone()['id']
+        db_close(conn, cur)
+        return jsonify({'id': film_id}), 201
+    except Exception as e:
+        db_close(conn, cur)
+        return {'error': f'Ошибка при добавлении фильма: {str(e)}'}, 500
     
 
 
