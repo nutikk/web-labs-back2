@@ -16,12 +16,16 @@ from lab6 import lab6
 from lab7 import lab7
 from lab8 import lab8
 from lab9 import lab9
+from rgz import rgz
 from werkzeug.exceptions import HTTPException
 app = Flask(__name__)
+
+app.config['DB_TYPE'] = 'postgres'
 
 login_manager = LoginManager()
 login_manager.login_view = 'lab8.login'
 login_manager.init_app(app)
+
 
 @login_manager.user_loader
 def load_users(login_id):
@@ -55,6 +59,7 @@ app.register_blueprint(lab6)
 app.register_blueprint(lab7)
 app.register_blueprint(lab8)
 app.register_blueprint(lab9)
+app.register_blueprint(rgz)
 
 
 class PaymentRequired(HTTPException):
@@ -89,7 +94,9 @@ def index():
         <a href ="/lab6/">Шестая лабораторная работа</a><br>
         <a href ="/lab7/">Седьмая лабораторная работа</a><br>
         <a href ="/lab8/">Восьмая лабораторная работа</a><br>
-        <a href ="/lab9/">Девятая лабораторная работа</a>
+        <a href ="/lab9/">Девятая лабораторная работа</a><br>
+        <a href ="/rgz">РГЗ</a>
+
         </main>
 
         <footer>
